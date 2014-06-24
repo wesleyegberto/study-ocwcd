@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	
+	<display-name>Servlets and JSP</display-name>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!-- context parameters -->
+	<context-param>
+		<param-name>email</param-name>
+		<param-value>wesleyegberto@github.com</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>warrior-name</param-name>
+		<param-value>Aragorn</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>warrior-type</param-name>
+		<param-value>knight</param-value>
+	</context-param>
+	
+	<!-- declaring parameters to Servlet (after Servlet 3.0 we can declare Servlets through annotation on the class) -->
+	<servlet>
+		<servlet-name>HomeServlet</servlet-name>
+		<servlet-class>test.servlet.HomeServlet</servlet-class>
+		<init-param>
+			<param-name>author</param-name>
+			<param-value>Wesley Egberto</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>HomeJsp</servlet-name>
+		<jsp-file>/HomeJsp.jsp</jsp-file>
+		<init-param>
+			<param-name>author</param-name>
+			<param-value>Wesley Egberto</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>GenerateError</servlet-name>
+		<servlet-class>test.servlet.generate_http_error.Generate404Servlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>GenerateError</servlet-name>
+		<url-pattern>/generateError</url-pattern>
+	</servlet-mapping>
+	
+	<!--
+	Servlet mapping order 
+	> The Container first search for Exact match, then Directory match and then
+	  for Extension match;
+	> If a request matches more tha one directory <url-pattern>, the Container
+	  choose the longest mapping (the most specific);
+	> Exact match:
+	<servlet-mapping>
+		<servlet-name>ServletOne</servlet-name>
+		<url-pattern>/Servlets/Stuff.do</url-pattern>
+	</servlet-mapping>
+	
+	> Directory match:
+	<servlet-mapping>
+		<servlet-name>ServletTwo</servlet-name>
+		<url-pattern>/Servlets/*</url-pattern>
+	</servlet-mapping>
+	
+	> Extension match:
+	<servlet-mapping>
+		<servlet-name>ServletThree</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	-->
+
+	<!-- Listeners - the container figures out by itself which one is the type of each listener (we also can declare through annotations) 
+	<listener>
+		<listener-class>test.listener.AppSessionListener</listener-class>
+	</listener>
+	-->
+	<listener>
+		<listener-class>test.listener.AppContextListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>test.listener.AppServletRequestAttributeListener</listener-class>
+	</listener>
+	<listener> 
+		<listener-class>test.listener.AppServletRequestListener</listener-class>
+	</listener>
+
+	<!-- resource reference of connection -->
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/DbPerson</res-ref-name> <!-- name defined in context.xml -->
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<!-- JSP config
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<scripting-invalid>true</scripting-invalid> disable scripting elements for all JSP (is used to obligate to use only EL)
+			<el-ignored>true</el-ignored> is used to ignore EL
+		</jsp-property-group>
+	</jsp-config>
+	 -->
+	 
+	 <!--
+	 [ EJB ]
+	 <ejb-local-ref>
+	 	<ejb-ref-name>ejb/Customer</ejb-ref-name> JNDI lookup
+	 	<ejb-ref-type>Entity</ejb-ref-type> EJB type
+	 	<local-home>test.ejb.CustomerHome</local-home>
+	 	<local>test.ejb.Customer</local>
+	 </ejb-local-ref>
+	 
+	 <ejb-ref>
+	 	<ejb-ref-name>ejb/LocalCustomer</ejb-ref-name>
+	 	<ejb-ref-type>Entity</ejb-ref-type>
+	 	<home>test.ejb.CustomerHome</home>
+	 	<remote>test.ejb.Customer</remote>
+	 </ejb-ref>
+	 -->
+	 
+	 <!-- environment entry -->
+	 <env-entry>
+	 	<env-entry-name>sell/maxDiscount</env-entry-name>
+	 	<env-entry-type>java.lang.Double</env-entry-type>
+	 	<env-entry-value>1.65</env-entry-value>
+	 </env-entry>
+
+	<!-- mime types -->
+	<mime-mapping>
+		<extension>jpg</extension>
+		<mime-type>image/jpg</mime-type>
+	</mime-mapping>
+
+	<!-- error page 
+	<error-page>
+		<exception-type>java.io.IOException</exception-type>
+		<location>/error_io.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>403</error-code>
+		<location>/error_unauthorized.jsp</location>
+	</error-page>
+	-->
+
+
+	<!-- Filters (we can declare filter here or with annotation in the class) -->
+	<filter>
+		<filter-name>CountFilter</filter-name> <!-- mandatory -->
+		<filter-class>test.filters.CountFilter</filter-class> <!-- mandatory -->
+		<init-param>
+			<param-name>initialValue</param-name>
+			<param-value>0</param-value>
+		</init-param>
+	</filter>
+	<!-- Filters mapping (we arrange these mappings to create a filter invocation sequences) -->
+	<filter-mapping>
+		<filter-name>CountFilter</filter-name>
+		<url-pattern>/*</url-pattern> <!-- we can use url-pattern or servlet-name (the Container first find for url-pattern and the for servlet-name) -->
+		<dispatcher>REQUEST</dispatcher> <!-- will apply only in request coming from clients (is the default) -->
+		<!-- we can have one or more:
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>ERROR</dispatcher> -->
+	</filter-mapping>
+
+	<!-- a filter to wrapper the response to ContrainedServlet -->
+	<filter>
+		<filter-name>ConstrainedServletFilterWrapper</filter-name>
+		<filter-class>test.filters.WrapperFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ConstrainedServletFilterWrapper</filter-name>
+		<servlet-name>ConstrainedServlet</servlet-name>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<!--
+	Security - Authorization
+	
+	> First: define the auth-method in <login-config>;
+	  - There are 4 type:
+	    . BASIC
+	    . DIGEST (base64 - weak)
+	    . CLIENT-CERT (Public Key Certificates, extremely secure form, used mainly in B2B)
+	    . FORM (HTML form handle by programmer, use a login form [with a specific action and fields] and an error form)
+	  The BAISC, DIGEST and CLIENT-CERT is automatically handle by the Container
+	> Second: define the roles and users in the vendor-specific way.
+	  In Tomcat we use the tomcat-users.xml:
+		<role rolename="admin" />
+		<role rolename="user" />
+		<user username="admin" password="wesley" roles="admin" />
+		<user username="user" password="wesley" roles="user" />
+	> Third: define the security roles in DD, use the same roles used in the second step.
+	> Fourth: Define the resources and HTTP methods which are constraints in DD.
+	-->
+	
+	<!-- Using BASIC
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+	-->
+	
+	<!-- Using FORM -->
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/security/login_form.jsp</form-login-page>
+			<form-error-page>/security/login_error.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+	
+	<servlet>
+		<servlet-name>ConstrainedServlet</servlet-name>
+		<servlet-class>test.servlet.constrained.ConstrainedServlet</servlet-class>
+		<!-- mapping the made up name in the servlet to real name of the role -->
+		<security-role-ref>
+			<role-name>adm</role-name>
+			<role-link>admin</role-link>
+		</security-role-ref>
+	</servlet>
+	
+	<security-role>
+		<role-name>admin</role-name>
+		<role-name>user</role-name>
+	</security-role>
+	
+	<security-constraint>
+		<!-- we can have one or more web-resource-collection -->
+		<web-resource-collection>
+			<!-- mandatory name used by tools -->
+			<web-resource-name>BasicSecurityAdmin</web-resource-name>
+			
+			<!-- the resources to be constrained -->
+			<url-pattern>/security/only_admin/*</url-pattern>
+			
+			<!-- if any HTTP methods is specified then ALL HTTP methods will be constrained (restricted) -->
+		</web-resource-collection>
+		
+		<web-resource-collection>
+			<!-- mandatory name used by tools -->
+			<web-resource-name>BasicSecurityUser</web-resource-name>
+			
+			<!-- the resources to be constrained -->
+			<url-pattern>/security/only_user/*</url-pattern>
+			<url-pattern>/security/send_data_encrypt.jsp</url-pattern>
+			
+			<!-- which HTTP methods are constrained - optional (all HTTP methods will be constrained) -->
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<!-- PUT, TRACE, DELETE, HEAD and OPTIONS are allowed to everyone -->
+		</web-resource-collection>
+		
+		<!-- which roles (who) are allowed to access the resources (if any role-name is specified then no one can access, if a role-name is
+		specified with a * then all users are allowed -->
+		<auth-constraint>
+			<role-name>admin</role-name>
+			<role-name>user</role-name>
+		</auth-constraint>
+		
+		<!-- JEE protected transport layout connection - data integrity and confidentiality for those web resources
+		Values: NONE (default), INTEGRAL or CONFIDENTIAL -->
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
+</web-app>

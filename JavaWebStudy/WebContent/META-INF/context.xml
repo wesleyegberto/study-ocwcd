@@ -1,0 +1,18 @@
+<Context>
+	<!--
+		[resource of JNDI DataSource]
+		>removeAbandoned: remove the idle resources (was correctly closed);
+		>removeAbandonedTimeout: timeout to be considered idle resource;
+		>logAbandoned: log the stack trace of code which abandoned the database connection resources;
+		>maxActive: maximum number of database connections in pool. Make sure you configure your mysqld max_connections
+			large enough to handle all of your db connections. Set to -1 for no limit;
+		>maxIdle: maximum number of idle database connections to retain in pool. Set to -1 for no limit.
+	 	>maxWait: maximum time to wait for a database connection to become available in ms, in this example 10 seconds.
+	 		An Exception is thrown if this timeout is exceeded.  Set to -1 to wait indefinitely.
+    -->
+	<Resource name="jdbc/DbPerson" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000" username="root"
+		password="1234abc@" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/DB_PERSON"
+		removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true" />
+</Context>

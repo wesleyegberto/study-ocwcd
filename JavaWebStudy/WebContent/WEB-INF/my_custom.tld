@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+	
+	<tlib-version>1.0</tlib-version> <!-- mandatory (only the tag, its value isn't -->
+	<short-name>MyCustom</short-name> <!-- mandatory, mainly for tools to use -->
+	<uri>mycustom</uri> <!-- mandatory, will be used on taglib import -->
+	
+	<!-- function to use in EL -->
+	<function>
+		<name>authorName</name> <!-- name of EL function -->
+		<function-class>test.tld.function.Functions</function-class> <!-- fully-qualified name of the Java class containing the static method that implements the function -->
+		<function-signature>String getAuthorNameOfProject()</function-signature> <!-- method's signature -->
+	</function>
+	
+	<!-- Classic Custom Tag -->
+	<tag>
+		<description>Classic 1</description>
+		<name>classicOne</name>
+		<tag-class>test.tld.customtags.classic.ClassicTagHandler</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+	<tag>
+		<description>Classic 2</description>
+		<name>classicWithBody</name>
+		<tag-class>test.tld.customtags.classic.ClassicWithBodyTagHandler</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	
+	<tag>
+		<description>Classic 3</description>
+		<name>classicWithBodyLoop</name>
+		<tag-class>test.tld.customtags.classic.ClassicWithBodyLoopTagHandler</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	
+	<tag>
+		<description>Nested Tag</description>
+		<name>classicTag</name>
+		<tag-class>test.tld.customtags.classic.ClassicNestedTagHandler</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	
+	<!-- Simple Custom Tag -->
+	<tag>
+		<description>AuthorNameTag</description>
+		<name>authorNameTag</name> <!-- required, used inside the tag -->
+		<tag-class>test.tld.customtags.AuthorNameTagHandler</tag-class> <!-- required, fully-qualified name of the Java class which implements the tag -->
+		<body-content>empty</body-content> <!-- required (define that the tag must not have body) -->
+	</tag>
+	
+	<tag>
+		<description>FormatNameTag</description>
+		<name>formatName</name>
+		<tag-class>test.tld.customtags.FormatNameTagHandler</tag-class>
+		<body-content>empty</body-content> <!-- we can use standard actions, even when is empty -->
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue> <!-- runtime expression value - define if tag requires a EL or a String literal -->
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>CommentTag - tag for comments</description>
+		<name>commentTag</name>
+		<tag-class>test.tld.customtags.CommentTagHandler</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>MultiplyTag - tag for multiplication tables</description>
+		<name>multiply</name>
+		<tag-class>test.tld.customtags.MultiplyTagHandler</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>number</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>SkipPageTag - test the SkipPageException</description>
+		<name>skipPageTag</name>
+		<tag-class>test.tld.customtags.SkipPageTagHandler</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+	
+	<!-- Custom Nested Tag -->
+	<tag>
+		<description>List - Classic Tag for Parent</description>
+		<name>list</name>
+		<tag-class>test.tld.customtags.nested.ListClassicTagHandler</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>title</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>ListItem - Simple Tag for List Itens</description>
+		<name>listItem</name>
+		<tag-class>test.tld.customtags.nested.ListItemSimpleTagHandler</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>text</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+</taglib>
