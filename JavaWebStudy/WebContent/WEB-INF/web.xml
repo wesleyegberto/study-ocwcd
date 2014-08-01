@@ -239,6 +239,7 @@
 		<role-name>user</role-name>
 	</security-role>
 	
+	<!-- With Servlets 3.x, we also can define the security constraint with annotation in the servlet class. -->
 	<security-constraint>
 		<!-- we can have one or more web-resource-collection -->
 		<web-resource-collection>
