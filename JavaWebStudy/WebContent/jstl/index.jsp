@@ -11,5 +11,7 @@
 		<p><a href="/JavaWebStudy/jstl_index?id=2">choose, when and otherwise</a></p>
 		<p><a href="/JavaWebStudy/jstl_index?id=3">forEach</a></p>
 		<p><a href="/JavaWebStudy/jstl_index?id=4">set</a></p>
+		<br/>
+		<p><a href="fmt_tags.jsp">Formatting actions</a></p>
 	</body>
 </html>

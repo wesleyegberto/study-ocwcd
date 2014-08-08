@@ -240,7 +240,7 @@
 	</security-role>
 	
 	<!-- With Servlets 3.x, we also can define the security constraint with annotation in the servlet class. -->
-	<security-constraint>
+	<security-constraint> <!-- We can use @ServletSecurity -->
 		<!-- we can have one or more web-resource-collection -->
 		<web-resource-collection>
 			<!-- mandatory name used by tools -->
@@ -261,9 +261,14 @@
 			<url-pattern>/security/send_data_encrypt.jsp</url-pattern>
 			
 			<!-- which HTTP methods are constrained - optional (all HTTP methods will be constrained) -->
-			<http-method>GET</http-method>
+			<http-method>GET</http-method> <!-- We can use @HttpMethodConstraint -->
 			<http-method>POST</http-method>
 			<!-- PUT, TRACE, DELETE, HEAD and OPTIONS are allowed to everyone -->
+			<!-- We can use http-method-omission to specify only the method that will be allowed
+			<http-method-omission>PUT</http-method-omission>
+			<http-method-omission>TRACE</http-method-omission>
+			<http-method-omission>HEAD</http-method-omission>
+			 -->
 		</web-resource-collection>
 		
 		<!-- which roles (who) are allowed to access the resources (if any role-name is specified then no one can access, if a role-name is
